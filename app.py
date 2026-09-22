@@ -3,14 +3,12 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 
-# Page configuration
 st.set_page_config(
     page_title="Crop Disease Detection",
     page_icon="🌱",
     layout="centered"
 )
 
-# Class names
 class_names = [
     "Tomato___Bacterial_spot",
     "Tomato___Early_blight",
@@ -18,7 +16,6 @@ class_names = [
     "Tomato___Late_blight"
 ]
 
-# Display-friendly names
 display_names = {
     "Tomato___Bacterial_spot": "Bacterial Spot",
     "Tomato___Early_blight": "Early Blight",
@@ -26,7 +23,6 @@ display_names = {
     "Tomato___Late_blight": "Late Blight"
 }
 
-# Disease descriptions
 disease_descriptions = {
     "Tomato___Bacterial_spot":
         "Bacterial Spot can appear as small dark spots on tomato leaves and may cause yellowing around affected areas.",
@@ -41,22 +37,19 @@ disease_descriptions = {
         "Late Blight can cause dark, irregular lesions on tomato leaves and may spread rapidly under favorable conditions."
 }
 
-# Load trained model
+
 @st.cache_resource
 def load_model():
-    return tf.keras.models.load_model("crop_disease_mobilenetv2.keras")
+    return tf.keras.models.load_model(
+        "crop_disease_mobilenetv2.keras"
+    )
 
 
 model = load_model()
 
-# Title
 st.title("🌱 Crop Disease Detection")
+st.write("Upload a tomato leaf image to detect its disease.")
 
-st.write(
-    "Upload a tomato leaf image to detect its disease."
-)
-
-# Upload image
 uploaded_file = st.file_uploader(
     "Choose a tomato leaf image",
     type=["jpg", "jpeg", "png"]
@@ -64,20 +57,29 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
 
-    # Open uploaded image
     image = Image.open(uploaded_file).convert("RGB")
 
-    # Display uploaded image
     st.image(
         image,
         caption="Uploaded Leaf",
         use_container_width=True
     )
 
-    # Preprocess image
+    # Resize image to the same size used during training
     image_resized = image.resize((224, 224))
+
+    # Convert image to NumPy array
     image_array = np.array(image_resized)
-    image_array = np.expand_dims(image_array, axis=0)
+
+    # IMPORTANT:
+    # Match the preprocessing used during model training
+    image_array = image_array / 255.0
+
+    # Add batch dimension
+    image_array = np.expand_dims(
+        image_array,
+        axis=0
+    )
 
     # Make prediction
     predictions = model.predict(
@@ -85,16 +87,13 @@ if uploaded_file is not None:
         verbose=0
     )
 
-    # Find predicted class
     predicted_index = np.argmax(predictions[0])
+
     predicted_class = class_names[predicted_index]
 
-    # Calculate confidence
-    confidence = predictions[0][predicted_index] * 100
-
-    # -----------------------------
-    # Prediction result
-    # -----------------------------
+    confidence = (
+        predictions[0][predicted_index] * 100
+    )
 
     st.subheader("Prediction")
 
@@ -106,14 +105,12 @@ if uploaded_file is not None:
         f"Confidence: **{confidence:.2f}%**"
     )
 
-    # -----------------------------
-    # Confidence level
-    # -----------------------------
-
     if confidence >= 80:
         confidence_level = "High Confidence"
+
     elif confidence >= 60:
         confidence_level = "Moderate Confidence"
+
     else:
         confidence_level = "Low Confidence"
 
@@ -121,19 +118,11 @@ if uploaded_file is not None:
         f"Confidence Level: **{confidence_level}**"
     )
 
-    # -----------------------------
-    # Disease information
-    # -----------------------------
-
     st.subheader("About the Prediction")
 
     st.info(
         disease_descriptions[predicted_class]
     )
-
-    # -----------------------------
-    # Class probabilities
-    # -----------------------------
 
     st.subheader("Class Probabilities")
 
@@ -149,10 +138,6 @@ if uploaded_file is not None:
         st.progress(
             float(predictions[0][i])
         )
-
-    # -----------------------------
-    # Disclaimer
-    # -----------------------------
 
     st.markdown("---")
 
