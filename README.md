@@ -1,4 +1,10 @@
+Yes. Here is the **complete README only up to Results**. Do **not** include Project Structure or anything after it.
+
+Replace your current README content with this:
+
+````markdown
 # 🌱 Crop Disease Detection and Classification Using Deep Learning
+
 A deep learning-based web application that detects and classifies diseases in tomato leaves using MobileNetV2 transfer learning. Users can upload a tomato leaf image and receive a predicted disease class with confidence and class probabilities.
 
 ## 🚀 Features
@@ -38,7 +44,7 @@ The model classifies tomato leaf images into four categories:
 
 ## 📊 Dataset
 
-This project uses a subset of the **PlantVillage dataset**, focusing on four tomato leaf classes:
+This project uses a subset of the PlantVillage dataset, focusing on four tomato leaf classes:
 
 - Tomato___Bacterial_spot
 - Tomato___Early_blight
@@ -112,90 +118,39 @@ Disease Classification
 Prediction + Confidence Score
         ↓
 Streamlit Web Application
+````
 
-*Workflow Explanation*
-The user uploads a tomato leaf image.
-The image is converted to RGB format and resized to 224 × 224 pixels.
-MobileNetV2 extracts useful visual features from the image.
-The extracted features are passed through the classification layers.
-The Softmax layer produces probabilities for all four classes.
-The class with the highest probability is selected as the prediction.
-The Streamlit application displays the predicted class, confidence, and class probabilities.
+### Workflow Explanation
+
+1. The user uploads a tomato leaf image.
+2. The image is converted to RGB format and resized to `224 × 224` pixels.
+3. The image is normalized before being passed to the model.
+4. MobileNetV2 extracts useful visual features from the image.
+5. The extracted features are passed through the classification layers.
+6. The Softmax layer produces probabilities for all four classes.
+7. The class with the highest probability is selected as the prediction.
+8. The Streamlit application displays the predicted class, confidence, and class probabilities.
 
 ## 📈 Results
 
 The trained MobileNetV2 model was evaluated on the test dataset.
 
-- **Test Accuracy:** 88.84%
-- **Test Loss:** 0.3277
+* **Test Accuracy:** 88.84%
+* **Test Loss:** 0.3277
 
 ### Classification Report
 
-| Class | Precision | Recall | F1-Score |
-|---|---:|---:|---:|
-| Bacterial Spot | 0.91 | 0.94 | 0.92 |
-| Early Blight | 0.75 | 0.64 | 0.69 |
-| Healthy | 0.95 | 0.96 | 0.96 |
-| Late Blight | 0.88 | 0.90 | 0.89 |
-| **Overall Accuracy** | | | **0.89** |
+| Class                | Precision | Recall | F1-Score |
+| -------------------- | --------: | -----: | -------: |
+| Bacterial Spot       |      0.91 |   0.94 |     0.92 |
+| Early Blight         |      0.75 |   0.64 |     0.69 |
+| Healthy              |      0.95 |   0.96 |     0.96 |
+| Late Blight          |      0.88 |   0.90 |     0.89 |
+| **Overall Accuracy** |           |        | **0.89** |
 
-The model performed differently across the four classes, with the test results showing stronger classification performance for the Healthy and Bacterial Spot classes and comparatively lower performance for Early Blight.
+The model performed differently across the four classes, with stronger test performance for Healthy and Bacterial Spot and comparatively lower performance for Early Blight.
 
-## 📁 Project Structure
-
-```text
-Crop-Disease-Detection/
-│
-├── app.py
-├── train_model.py
-├── prepare_dataset.py
-├── view_dataset.py
-├── crop_disease_mobilenetv2.keras
-├── requirements.txt
-├── .gitignore
-├── README.md
-│
-├── dataset/
-│   └── tomato/
-│       ├── Tomato___Bacterial_spot/
-│       ├── Tomato___Early_blight/
-│       ├── Tomato___healthy/
-│       └── Tomato___Late_blight/
-│
-└── splits/
-    ├── train.csv
-    ├── validation.csv
-    └── test.csv
-
- ## ▶️ How to Run Locally
-
-### 1. Clone the Repository
-
-```bash
-git clone <your-github-repository-url>
-cd Crop-Disease-Detection
-### 2. Create a Virtual Environment
-
-```bash
-python -m venv venv
-
-Then below that, add:
-
-```markdown
-### 3. Activate the Virtual Environment
-
-**Windows:**
-
-```bash
-venv\Scripts\activate
-### 4. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-### 5. Run the Streamlit Application
-
-```bash
-streamlit run app.py
+```
 
 ## 🌐 Deployment
 
