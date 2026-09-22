@@ -150,7 +150,7 @@ The trained MobileNetV2 model was evaluated on the test dataset.
 
 The model performed differently across the four classes, with stronger test performance for Healthy and Bacterial Spot and comparatively lower performance for Early Blight.
 
-```
+
 
 ## 🌐 Deployment
 
